@@ -1,0 +1,31 @@
+Inputs: 
+    FastLength(9), 
+    SlowLength(21), 
+    FibLevel1(61.8), 
+    FibLevel2(76.4);
+
+Variables: 
+    FastMA(0), 
+    SlowMA(0), 
+    FibHigh(High), 
+    FibLow(Low), 
+    Retracement1(0), 
+    Retracement2(0);
+
+FastMA = Average(Close, FastLength);
+SlowMA = Average(Close, SlowLength);
+
+If (High > FibHigh) Then FibHigh = High;
+If (Low < FibLow) Then FibLow = Low;
+
+Retracement1 = FibHigh - (FibHigh - FibLow) * (FibLevel1 / 100);
+Retracement2 = FibHigh - (FibHigh - FibLow) * (FibLevel2 / 100);
+
+If (FastMA crosses above SlowMA) and (Close >= Retracement1) and (Close <= Retracement2) Then
+    Buy ("Buy Signal") next bar at market;
+
+If (FastMA crosses below SlowMA) and (Close <= Retracement1) and (Close >= Retracement2) Then
+    Sell ("Sell Signal") next bar at market;
+
+If (High > FibHigh) Then FibHigh = High;
+If (Low < FibLow) Then FibLow = Low;
